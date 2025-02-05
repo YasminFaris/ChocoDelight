@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopping Cart</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    body {font-family: "Times New Roman", Georgia, Serif;}
+    h1 {
+      font-family: "Playfair Display";
+      letter-spacing: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+    <a href="index.html" class="w3-bar-item w3-button">Choco Delight</a>
+  </div>
+</div>
+
+<!-- Cart Content -->
+<div class="w3-container w3-padding-64" style="max-width:800px;margin:auto">
+  <h1 class="w3-center">Shopping Cart</h1>
+  <table class="w3-table w3-bordered w3-striped">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody id="cart-items">
+      <!-- Cart items will be dynamically inserted here -->
+    </tbody>
+  </table>
+  <h3 class="w3-right">Total: RM <span id="total-price">0</span></h3>
+  <br><br>
+  <button class="w3-button w3-red" onclick="clearCart()">Clear Cart</button>
+</div>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  function displayCart() {
+    let cartTable = document.getElementById("cart-items");
+    let totalPrice = 0;
+    cartTable.innerHTML = "";
+    
+    cart.forEach(item => {
+      let row = `<tr>
+        <td>${item.name}</td>
+        <td>${item.quantity}</td>
+        <td>RM ${item.price * item.quantity}</td>
+      </tr>`;
+      cartTable.innerHTML += row;
+      totalPrice += item.price * item.quantity;
+    });
+    document.getElementById("total-price").innerText = totalPrice;
+  }
+
+  function clearCart() {
+    localStorage.removeItem("cart");
+    cart = [];
+    displayCart();
+  }
+
+  displayCart();
+</script>
+
+</body>
+</html>
