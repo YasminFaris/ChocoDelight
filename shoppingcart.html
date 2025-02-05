@@ -7,10 +7,7 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <style>
     body {font-family: "Times New Roman", Georgia, Serif;}
-    h1 {
-      font-family: "Playfair Display";
-      letter-spacing: 5px;
-    }
+    h1 { font-family: "Playfair Display"; letter-spacing: 5px; }
   </style>
 </head>
 <body>
@@ -19,6 +16,7 @@
 <div class="w3-top">
   <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
     <a href="index.html" class="w3-bar-item w3-button">Choco Delight</a>
+    <span class="w3-bar-item w3-right">🛒 Cart (<span id="cart-count">0</span>)</span>
   </div>
 </div>
 
@@ -43,32 +41,41 @@
 </div>
 
 <script>
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
   function displayCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let cartTable = document.getElementById("cart-items");
     let totalPrice = 0;
     cartTable.innerHTML = "";
-    
+
     cart.forEach(item => {
-      let row = `<tr>
-        <td>${item.name}</td>
-        <td>${item.quantity}</td>
-        <td>RM ${item.price * item.quantity}</td>
-      </tr>`;
-      cartTable.innerHTML += row;
-      totalPrice += item.price * item.quantity;
+        let row = `<tr>
+            <td>${item.name}</td>
+            <td>${item.quantity}</td>
+            <td>RM ${item.price * item.quantity}</td>
+        </tr>`;
+        cartTable.innerHTML += row;
+        totalPrice += item.price * item.quantity;
     });
+
     document.getElementById("total-price").innerText = totalPrice;
-  }
+    updateCartCount();
+}
 
-  function clearCart() {
+document.addEventListener("DOMContentLoaded", displayCart);
+
+
+function clearCart() {
     localStorage.removeItem("cart");
-    cart = [];
     displayCart();
+}
+
+  function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.getElementById("cart-count").innerText = totalItems;
   }
 
-  displayCart();
+  document.addEventListener("DOMContentLoaded", displayCart);
 </script>
 
 </body>
